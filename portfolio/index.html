@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bogo Matthieu — Développeur Logiciel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #185FA5;
+      --blue-light: #E6F1FB;
+      --blue-dark: #0C447C;
+      --teal: #0F6E56;
+      --teal-light: #E1F5EE;
+      --amber-light: #FAEEDA;
+      --amber-dark: #633806;
+      --purple-light: #EEEDFE;
+      --purple-dark: #3C3489;
+      --text: #1a1a1a;
+      --text-muted: #6b7280;
+      --border: rgba(0,0,0,0.1);
+      --bg: #ffffff;
+      --bg-soft: #f9fafb;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 60px;
+    }
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo span { color: var(--blue); }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-cta {
+      background: var(--blue);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: calc(100vh - 60px);
+      display: flex;
+      align-items: center;
+      padding: 80px 40px;
+      gap: 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero-text { flex: 1; }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--blue);
+      font-weight: 500;
+      margin-bottom: 16px;
+      background: var(--blue-light);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .hero h1 {
+      font-size: 52px;
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 8px;
+    }
+    .hero h1 .accent { color: var(--blue); }
+    .hero-subtitle {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .hero-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 460px;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--blue-dark); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--blue); color: var(--blue); }
+    .hero-avatar {
+      width: 280px;
+      height: 280px;
+      border-radius: 24px;
+      background: var(--blue-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+      font-weight: 600;
+      color: var(--blue);
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-avatar::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--blue), #534AB7);
+    }
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 32px;
+    }
+    .stat { text-align: left; }
+    .stat-num { font-size: 24px; font-weight: 600; color: var(--blue); }
+    .stat-label { font-size: 12px; color: var(--text-muted); }
+
+    /* SECTIONS */
+    section { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--blue);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      margin-bottom: 40px;
+    }
+    .full-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .skill-card {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .skill-card:hover { border-color: var(--blue); transform: translateY(-2px); }
+    .skill-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: var(--blue-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 20px;
+      color: var(--blue);
+    }
+    .skill-name { font-size: 14px; font-weight: 500; margin-bottom: 12px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      font-weight: 500;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .project-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .project-card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 8px 24px rgba(24,95,165,0.08);
+      transform: translateY(-2px);
+    }
+    .project-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 22px;
+    }
+    .project-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .project-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
+    .project-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .project-tech { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+    .tech-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--bg-soft);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    /* TIMELINE */
+    .timeline { display: flex; flex-direction: column; gap: 0; max-width: 680px; }
+    .timeline-item {
+      display: flex;
+      gap: 24px;
+      padding-bottom: 36px;
+      position: relative;
+    }
+    .timeline-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 44px;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .timeline-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--blue-light);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--blue);
+      font-size: 16px;
+    }
+    .timeline-content { flex: 1; padding-top: 6px; }
+    .timeline-content h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+    .timeline-school { font-size: 13px; color: var(--blue); font-weight: 500; margin-bottom: 2px; }
+    .timeline-period { font-size: 12px; color: var(--text-muted); }
+    .timeline-desc { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.6; }
+
+    /* CERTIFICATIONS */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .cert-card {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .cert-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: var(--amber-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .cert-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+    .cert-card p { font-size: 12px; color: var(--text-muted); }
+
+    /* CONTACT */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .contact-info h2 { font-size: 28px; font-weight: 600; margin-bottom: 12px; }
+    .contact-info p { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.7; }
+    .contact-items { display: flex; flex-direction: column; gap: 16px; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .contact-item-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: var(--blue-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue);
+      font-size: 18px;
+    }
+    .contact-item-text p { font-size: 11px; color: var(--text-muted); }
+    .contact-item-text span { font-size: 14px; font-weight: 500; }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 13px; font-weight: 500; }
+    .form-group input,
+    .form-group textarea {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--blue); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg-soft);
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p { font-size: 13px; color: var(--text-muted); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--blue); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { flex-direction: column-reverse; padding: 40px 20px; gap: 32px; min-height: auto; }
+      .hero h1 { font-size: 36px; }
+      .hero-avatar { width: 140px; height: 140px; font-size: 48px; border-radius: 16px; }
+      section { padding: 48px 20px; }
+      .contact-wrapper { grid-template-columns: 1fr; gap: 40px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px 20px; }
+      .hero-stats { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MB<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#education">Formation</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:matthieubogo776@gmail.com" class="nav-cta">Me contacter</a>
+</nav>
+
+<!-- HERO -->
+<div id="about">
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Disponible pour des projets</div>
+      <h1>Bogo<br><span class="accent">Matthieu</span></h1>
+      <p class="hero-subtitle">Informaticien — Développeur Logiciel</p>
+      <p class="hero-desc">
+        Jeune développeur passionné basé à Dakar, Sénégal. Spécialisé en développement web et mobile avec React, Laravel et Flutter. Rigoureux, autonome et toujours prêt à apprendre.
+      </p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.4 2 2 0 0 1 3.05 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+          Voir mes projets
+        </a>
+        <a href="mailto:matthieubogo776@gmail.com" class="btn-outline">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          M'écrire
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Projets réalisés</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Technologies</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Certifications</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-avatar">MB</div>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-eyebrow">Ce que je maîtrise</div>
+  <div class="section-title">Compétences techniques</div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+      <div class="skill-name">Langages de programmation</div>
+      <div class="tags">
+        <span class="tag">Java</span>
+        <span class="tag">PHP</span>
+        <span class="tag">Python</span>
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <div class="skill-name">Frameworks</div>
+      <div class="tags">
+        <span class="tag">React.js</span>
+        <span class="tag">Laravel</span>
+        <span class="tag">Flutter</span>
+        <span class="tag">Next.js</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      </div>
+      <div class="skill-name">Bases de données</div>
+      <div class="tags">
+        <span class="tag">MySQL</span>
+        <span class="tag">PostgreSQL</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 0-14.14 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+      </div>
+      <div class="skill-name">Outils & DevOps</div>
+      <div class="tags">
+        <span class="tag">Git</span>
+        <span class="tag">GitHub</span>
+        <span class="tag">Render</span>
+        <span class="tag">Canva</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-eyebrow">Ce que j'ai réalisé</div>
+  <div class="section-title">Projets & réalisations</div>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-icon" style="background:#E6F1FB">
+        <svg width="22" height="22" fill="none" stroke="#185FA5" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+      </div>
+      <h3>Tournoi de Boxe</h3>
+      <p>Application web de gestion de tournoi avec inscription des boxeurs, planification des matchs et résultats en temps réel.</p>
+      <span class="project-badge" style="background:#E6F1FB;color:#0C447C">Projet académique</span>
+      <div class="project-tech">
+        <span class="tech-tag">PHP</span>
+        <span class="tech-tag">MySQL</span>
+        <span class="tech-tag">HTML/CSS</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-icon" style="background:#E1F5EE">
+        <svg width="22" height="22" fill="none" stroke="#0F6E56" stroke-width="2" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+      </div>
+      <h3>Gestion de Restaurant</h3>
+      <p>Système complet de gestion des commandes, menus et réservations pour un restaurant. Interface intuitive pour le personnel.</p>
+      <span class="project-badge" style="background:#E1F5EE;color:#085041">Projet personnel</span>
+      <div class="project-tech">
+        <span class="tech-tag">Laravel</span>
+        <span class="tech-tag">React</span>
+        <span class="tech-tag">MySQL</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-icon" style="background:#FAEEDA">
+        <svg width="22" height="22" fill="none" stroke="#854F0B" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><circle cx="18" cy="6" r="4"/><path d="M18 4v4"/><path d="M16 6h4"/></svg>
+      </div>
+      <h3>Coopagri</h3>
+      <p>Plateforme de gestion pour coopérative agricole : suivi des membres, des productions et des transactions financières.</p>
+      <span class="project-badge" style="background:#FAEEDA;color:#633806">Projet académique</span>
+      <div class="project-tech">
+        <span class="tech-tag">Java</span>
+        <span class="tech-tag">PostgreSQL</span>
+      </div>
+    </div>
+    <div class="project-card" style="border-color: #185FA5;">
+      <div style="background:#E6F1FB;color:#0C447C;font-size:11px;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:12px;font-weight:500">En cours ✦</div>
+      <div class="project-icon" style="background:#EEEDFE">
+        <svg width="22" height="22" fill="none" stroke="#534AB7" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <h3>Senegalist</h3>
+      <p>Portail de bibliothèque numérique sénégalaise — recherche sémantique multi-dépôts de documents institutionnels.</p>
+      <span class="project-badge" style="background:#EEEDFE;color:#3C3489">Flutter Web</span>
+      <div class="project-tech">
+        <span class="tech-tag">Flutter</span>
+        <span class="tech-tag">Laravel</span>
+        <span class="tech-tag">Render</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-eyebrow">Mon parcours</div>
+  <div class="section-title">Formation & certifications</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start">
+    <div>
+      <h3 style="font-size:16px;font-weight:500;margin-bottom:24px;color:var(--text-muted)">Diplômes</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div class="timeline-content">
+            <h3>Licence GLSI</h3>
+            <div class="timeline-school">ESP Dakar</div>
+            <div class="timeline-period">2025 – 2026 (en cours)</div>
+            <div class="timeline-desc">Génie Logiciel et Système d'Information</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div class="timeline-content">
+            <h3>DST Informatique</h3>
+            <div class="timeline-school">ESP Dakar</div>
+            <div class="timeline-period">2023 – 2025</div>
+            <div class="timeline-desc">Développement web, bases de données et POO</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></svg>
+          </div>
+          <div class="timeline-content">
+            <h3>Baccalauréat Scientifique</h3>
+            <div class="timeline-school">Complexe Scolaire Doudji Lookar Alpha3</div>
+            <div class="timeline-period">2022 – 2023</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:16px;font-weight:500;margin-bottom:24px;color:var(--text-muted)">Certifications</h3>
+      <div class="cert-grid" style="grid-template-columns:1fr">
+        <div class="cert-card">
+          <div class="cert-icon">
+            <svg width="18" height="18" fill="none" stroke="#854F0B" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <h3>Introduction à la Cybersécurité</h3>
+            <p>Cisco Networking Academy — Fondamentaux, menaces et bonnes pratiques</p>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">
+            <svg width="18" height="18" fill="none" stroke="#854F0B" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div>
+            <h3>Huawei Talent Online</h3>
+            <p>Huawei — Technologies cloud et infrastructures numériques</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrapper">
+    <div class="contact-info">
+      <div class="section-eyebrow">Travaillons ensemble</div>
+      <h2>Prenons contact</h2>
+      <p>Vous avez un projet ou une opportunité ? N'hésitez pas à me contacter, je suis disponible pour des missions freelance ou des opportunités de stage.</p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <p>Email</p>
+            <span>matthieubogo776@gmail.com</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.4 2 2 0 0 1 3.05 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <p>Téléphone</p>
+            <span>+221 78 759 93 78</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <p>Localisation</p>
+            <span>Dakar, Sénégal 🇸🇳</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <p>GitHub</p>
+            <span>MatthBG26</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-group">
+        <label>Nom complet</label>
+        <input type="text" placeholder="Votre nom" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="votre@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Décrivez votre projet ou votre demande..."></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%;justify-content:center;padding:14px">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Envoyer le message
+      </button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Bogo Matthieu — Développeur Logiciel</p>
+  <div class="footer-links">
+    <a href="mailto:matthieubogo776@gmail.com">Email</a>
+    <a href="https://github.com/MatthBG26" target="_blank">GitHub</a>
+    <a href="#about">Retour en haut</a>
+  </div>
+</footer>
+
+</body>
+</html>
