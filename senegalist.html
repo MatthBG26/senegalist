@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Senegalist — Portail de recherche documentaire</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F7F8FC; color: #1A1A2E; }
+:root {
+  --g1: #003F2D; --g2: #0B5FFF; --gold: #F5A623;
+  --surface: #F7F8FC; --card: #ffffff;
+  --border: rgba(0,0,0,0.09); --muted: #6B7280; --text: #1A1A2E;
+}
+
+/* ── NAV ── */
+.nav {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 40px; background: #fff;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-logo-box { border: 2px solid #1A1A2E; padding: 4px 9px; font-weight: 800; font-size: 15px; letter-spacing: 1px; }
+.nav-brand { display: flex; flex-direction: column; gap: 1px; }
+.nav-brand strong { font-size: 14px; color: #0B5FFF; font-weight: 700; }
+.nav-brand span { font-size: 11px; color: var(--muted); }
+.nav-links { display: flex; gap: 4px; margin-left: 8px; }
+.nav-links button { background: none; border: none; font-size: 13px; color: var(--muted); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-family: inherit; transition: all .15s; }
+.nav-links button:hover { background: #F3F4F6; color: var(--text); }
+.nav-links button.active { color: #0B5FFF; font-weight: 600; background: #EBF3FF; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.badge-count { background: #EBF3FF; color: #185FA5; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; border: 1px solid #B5D4F4; }
+.nav-btn { border: 1px solid #D1D5DB; background: none; font-size: 13px; padding: 6px 14px; border-radius: 6px; cursor: pointer; color: var(--text); display: flex; align-items: center; gap: 6px; font-family: inherit; transition: all .15s; }
+.nav-btn:hover { background: #F3F4F6; }
+
+/* ── PAGE VIEWS ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #003F2D 0%, #1A1A2E 45%, #0B3F8F 100%);
+  padding: 60px 40px 52px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.hero-content { position: relative; max-width: 900px; margin: 0 auto; }
+.hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; color: rgba(245,166,35,0.9); text-transform: uppercase; margin-bottom: 14px; }
+.hero-title { font-size: 36px; font-weight: 800; color: #fff; line-height: 1.15; margin-bottom: 12px; }
+.hero-title span { color: #F5A623; }
+.hero-sub { color: rgba(255,255,255,0.6); font-size: 15px; margin-bottom: 32px; max-width: 600px; line-height: 1.6; }
+.search-bar { display: flex; align-items: center; background: #fff; border-radius: 10px; overflow: hidden; max-width: 820px; box-shadow: 0 8px 32px rgba(0,0,0,0.22); }
+.search-icon { padding: 0 16px; color: #aaa; font-size: 20px; flex-shrink: 0; }
+.search-bar input { flex: 1; border: none; outline: none; font-size: 14px; padding: 16px 0; background: transparent; color: #1a1a2e; font-family: inherit; }
+.search-bar input::placeholder { color: #bbb; }
+.search-divider { width: 1px; height: 46px; background: #eee; flex-shrink: 0; }
+.search-select { border: none; outline: none; font-size: 13px; padding: 0 16px; background: transparent; color: #555; cursor: pointer; height: 54px; font-family: inherit; }
+.search-btn { background: #F5A623; color: #fff; border: none; padding: 0 28px; height: 54px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; font-family: inherit; transition: background .2s; }
+.search-btn:hover { background: #e09a1a; }
+.hero-chips { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.chip { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); font-size: 12px; padding: 5px 14px; border-radius: 20px; cursor: pointer; transition: background .2s; font-family: inherit; }
+.chip:hover { background: rgba(255,255,255,0.2); }
+
+/* ── KPI ── */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 28px 40px 0; max-width: 1200px; margin: 0 auto; }
+.kpi-card { background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 22px 24px; position: relative; overflow: hidden; cursor: pointer; transition: box-shadow .2s, transform .2s; }
+.kpi-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.kpi-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 3px 3px 0 0; }
+.kpi-card.c1::after { background: #0B5FFF; }
+.kpi-card.c2::after { background: #1D9E75; }
+.kpi-card.c3::after { background: #F5A623; }
+.kpi-card.c4::after { background: #E24B4A; }
+.kpi-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
+.kpi-val { font-size: 36px; font-weight: 800; color: var(--text); line-height: 1; margin-bottom: 6px; }
+.kpi-sub { font-size: 12px; color: var(--muted); }
+.kpi-icon { position: absolute; right: 18px; top: 20px; font-size: 32px; opacity: 0.1; color: var(--text); }
+
+/* ── DASHBOARD GRID ── */
+.dashboard-grid { display: grid; grid-template-columns: 1fr 360px; gap: 20px; padding: 20px 40px 40px; max-width: 1200px; margin: 0 auto; }
+.panel { background: #fff; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+.panel-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px 14px; border-bottom: 1px solid var(--border); }
+.panel-title { font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); }
+.panel-action { font-size: 12px; color: #0B5FFF; cursor: pointer; border: none; background: none; font-weight: 600; font-family: inherit; display: flex; align-items: center; gap: 4px; }
+.panel-action:hover { text-decoration: underline; }
+.panel-body { padding: 18px 22px; }
+
+/* ── FILTERS ── */
+.filter-row { display: flex; align-items: center; gap: 8px; padding: 12px 22px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.filter-btn { font-size: 12px; border: 1px solid #D1D5DB; background: none; padding: 5px 13px; border-radius: 20px; cursor: pointer; color: var(--muted); font-family: inherit; transition: all .15s; }
+.filter-btn:hover, .filter-btn.on { background: #EBF3FF; border-color: #B5D4F4; color: #185FA5; font-weight: 600; }
+.result-label { font-size: 12px; color: var(--muted); }
+.filter-selects { display: flex; gap: 8px; padding: 10px 22px; border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
+.filter-select { font-size: 12px; border: 1px solid #D1D5DB; background: #fff; padding: 5px 10px; border-radius: 6px; cursor: pointer; color: var(--text); font-family: inherit; }
+.filter-select:focus { outline: none; border-color: #0B5FFF; }
+.sort-btn { margin-left: auto; font-size: 12px; border: 1px solid #D1D5DB; background: #fff; padding: 5px 12px; border-radius: 6px; cursor: pointer; color: var(--text); font-family: inherit; display: flex; align-items: center; gap: 5px; }
+.sort-btn:hover { background: #F3F4F6; }
+
+/* ── RESULT ITEMS ── */
+.result-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 22px; border-bottom: 1px solid var(--border); transition: background .15s; cursor: pointer; }
+.result-item:last-child { border-bottom: none; }
+.result-item:hover { background: #FAFBFF; }
+.result-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.result-info { flex: 1; min-width: 0; }
+.result-title { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; margin-bottom: 6px; }
+.result-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.pill { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 10px; }
+.result-author { font-size: 12px; color: var(--muted); }
+.result-year { font-size: 12px; color: var(--muted); font-weight: 600; }
+.result-actions { flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.result-dl { color: var(--muted); font-size: 20px; cursor: pointer; border: none; background: none; padding: 4px; border-radius: 6px; transition: all .15s; }
+.result-dl:hover { background: #EBF3FF; color: #0B5FFF; }
+.fav-btn { color: #ddd; font-size: 18px; cursor: pointer; border: none; background: none; padding: 4px; border-radius: 6px; transition: all .15s; }
+.fav-btn.active { color: #F5A623; }
+.fav-btn:hover { color: #F5A623; }
+.empty-state { text-align: center; padding: 48px 0; color: var(--muted); }
+.empty-state i { font-size: 36px; display: block; margin-bottom: 12px; opacity: 0.35; }
+.empty-state p { font-size: 14px; }
+
+/* ── RESUME & KEYWORDS ── */
+.result-resume { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 8px; display: none; background: #F9FAFB; border-left: 3px solid #0B5FFF; padding: 10px 12px; border-radius: 0 6px 6px 0; }
+.result-keywords { display: none; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.kw-tag { font-size: 11px; background: #F3F4F6; border: 1px solid #E5E7EB; color: #374151; padding: 2px 8px; border-radius: 10px; cursor: pointer; transition: all .15s; }
+.kw-tag:hover { background: #EBF3FF; border-color: #B5D4F4; color: #185FA5; }
+.result-item.open .result-resume { display: block; }
+.result-item.open .result-keywords { display: flex; }
+.result-toggle { background: none; border: none; cursor: pointer; font-size: 11px; color: #0B5FFF; font-family: inherit; margin-top: 6px; padding: 0; display: flex; align-items: center; gap: 3px; }
+.result-toggle:hover { text-decoration: underline; }
+
+/* ── ACTIVE QUERY TAG ── */
+.active-filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 22px; border-bottom: 1px solid var(--border); background: #FFFBF0; }
+.active-filters:empty { display: none; }
+.active-tag { display: inline-flex; align-items: center; gap: 6px; background: #FEF3E2; border: 1px solid #F5D082; color: #87540D; font-size: 12px; font-weight: 600; padding: 3px 10px 3px 12px; border-radius: 20px; }
+.active-tag button { background: none; border: none; cursor: pointer; color: #87540D; font-size: 14px; line-height: 1; padding: 0 2px; font-family: inherit; }
+
+/* ── SIDEBAR ── */
+.sidebar { display: flex; flex-direction: column; gap: 20px; }
+.donut-wrap { display: flex; flex-direction: column; align-items: center; }
+.donut-container { position: relative; width: 190px; height: 190px; }
+.donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+.donut-center span.big { font-size: 30px; font-weight: 800; color: var(--text); }
+.donut-center span.sm { font-size: 11px; color: var(--muted); }
+.legend { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 18px; }
+.legend-item { display: flex; align-items: center; gap: 9px; cursor: pointer; padding: 4px 6px; border-radius: 6px; transition: background .15s; }
+.legend-item:hover { background: #F3F4F6; }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.legend-name { flex: 1; font-size: 12px; color: var(--text); }
+.legend-count { font-size: 13px; font-weight: 700; }
+
+/* ── PAGINATION ── */
+.pagination { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 16px; border-top: 1px solid var(--border); }
+.page-btn { border: 1px solid #D1D5DB; background: #fff; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 13px; display: flex; align-items: center; justify-content: center; color: var(--text); transition: all .15s; }
+.page-btn:hover, .page-btn.active { background: #0B5FFF; color: #fff; border-color: #0B5FFF; }
+.page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── AUTEURS PAGE ── */
+.auteurs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; padding: 28px 40px; max-width: 1200px; margin: 0 auto; }
+.auteur-card { background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 20px; text-align: center; cursor: pointer; transition: box-shadow .2s, transform .2s; }
+.auteur-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.auteur-avatar { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: #fff; margin: 0 auto 12px; }
+.auteur-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.auteur-count { font-size: 12px; color: var(--muted); }
+
+/* ── STATS PAGE ── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 28px 40px; max-width: 1200px; margin: 0 auto; }
+.chart-panel { background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 24px; }
+.chart-title { font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+
+/* ── SOURCES PAGE ── */
+.sources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; padding: 28px 40px; max-width: 1200px; margin: 0 auto; }
+.source-card { background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 22px; cursor: pointer; transition: box-shadow .2s, transform .2s; }
+.source-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.source-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.source-dot { width: 12px; height: 12px; border-radius: 3px; }
+.source-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.source-count-badge { margin-left: auto; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.source-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+.source-bar-bg { background: #F3F4F6; border-radius: 10px; height: 6px; overflow: hidden; }
+.source-bar-fill { height: 100%; border-radius: 10px; transition: width 1s ease; }
+
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: #fff; border-radius: 16px; max-width: 620px; width: 92%; padding: 36px; position: relative; max-height: 85vh; overflow-y: auto; }
+.modal-close { position: absolute; top: 16px; right: 16px; background: #F3F4F6; border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+.modal-close:hover { background: #E5E7EB; }
+.modal-type { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+.modal-title { font-size: 20px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.modal-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.modal-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 8px; }
+.modal-resume-text { font-size: 14px; color: #374151; line-height: 1.7; margin-bottom: 20px; }
+.modal-kws { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+.modal-kw { font-size: 12px; background: #F3F4F6; border: 1px solid #E5E7EB; color: #374151; padding: 4px 12px; border-radius: 20px; cursor: pointer; }
+.modal-kw:hover { background: #EBF3FF; color: #185FA5; border-color: #B5D4F4; }
+.modal-actions { display: flex; gap: 10px; }
+.modal-dl-btn { background: #0B5FFF; color: #fff; border: none; padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 8px; }
+.modal-dl-btn:hover { background: #0a4fd4; }
+.modal-fav-btn { background: #FEF3E2; color: #87540D; border: 1px solid #F5D082; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 8px; }
+.modal-fav-btn:hover { background: #FCEBD0; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 28px; right: 28px; background: #1A1A2E; color: #fff; font-size: 13px; padding: 12px 20px; border-radius: 10px; z-index: 2000; opacity: 0; transform: translateY(10px); transition: all .25s; pointer-events: none; display: flex; align-items: center; gap: 8px; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── FOOTER ── */
+.footer { background: #003F2D; padding: 22px 40px; text-align: center; color: rgba(255,255,255,0.55); font-size: 12px; }
+.footer strong { color: rgba(255,255,255,0.88); }
+
+/* ── SECTION HEADER ── */
+.section-header { padding: 28px 40px 0; max-width: 1200px; margin: 0 auto; }
+.section-header h2 { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.section-header p { font-size: 14px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo-box">MESRI</div>
+  <div class="nav-brand">
+    <strong>Senegalist</strong>
+    <span>Recherche multi-dépôts</span>
+  </div>
+  <div class="nav-links">
+    <button class="active" onclick="showPage('recherche', this)">Rechercher</button>
+    <button onclick="showPage('auteurs', this)">Auteurs</button>
+    <button onclick="showPage('sources', this)">Sources</button>
+    <button onclick="showPage('statistiques', this)">Statistiques</button>
+  </div>
+  <div class="nav-right">
+    <div class="badge-count"><span id="navCount">487</span> documents indexés</div>
+    <button class="nav-btn" onclick="showToast('Connexion bientôt disponible')"><i class="ti ti-key"></i> Connexion</button>
+  </div>
+</nav>
+
+<!-- ══════════════ PAGE: RECHERCHE ══════════════ -->
+<div class="page active" id="page-recherche">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Portail national de la recherche</div>
+      <h1 class="hero-title">Explorez <span id="heroCount">487</span> documents<br>institutionnels sénégalais</h1>
+      <p class="hero-sub">Thèses, rapports, articles scientifiques — recherche sémantique sur l'ensemble des archives académiques et institutionnelles du Sénégal.</p>
+      <div class="search-bar">
+        <i class="ti ti-search search-icon"></i>
+        <input type="text" id="searchInput" placeholder="Thèse, article, rapport... ex: agriculture, numérique, santé" />
+        <div class="search-divider"></div>
+        <select class="search-select" id="depotSelect" onchange="doSearch()">
+          <option value="">Tous les dépôts</option>
+          <option value="UCAD">UCAD</option>
+          <option value="ANSD">ANSD</option>
+          <option value="CORAF">CORAF</option>
+          <option value="LIENS">LIENS</option>
+          <option value="ScholarvOx">ScholarvOx</option>
+        </select>
+        <button class="search-btn" onclick="doSearch()">Rechercher</button>
+      </div>
+      <div class="hero-chips">
+        <button class="chip" onclick="setQuery('changement climatique')">changement climatique</button>
+        <button class="chip" onclick="setQuery('agriculture')">agriculture</button>
+        <button class="chip" onclick="setQuery('économie numérique')">économie numérique</button>
+        <button class="chip" onclick="setQuery('santé')">santé publique</button>
+        <button class="chip" onclick="setQuery('constitution')">droit constitutionnel</button>
+        <button class="chip" onclick="setQuery('démographie')">démographie</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi-card c1" onclick="setFilter(null,'Tous')">
+      <div class="kpi-label">Documents indexés</div>
+      <div class="kpi-val" id="kpi1">0</div>
+      <div class="kpi-sub">7 archives connectées</div>
+      <i class="ti ti-files kpi-icon"></i>
+    </div>
+    <div class="kpi-card c2" onclick="showPage('auteurs', document.querySelector('.nav-links button:nth-child(2)'))">
+      <div class="kpi-label">Auteurs référencés</div>
+      <div class="kpi-val" id="kpi2">0</div>
+      <div class="kpi-sub">Chercheurs et institutions</div>
+      <i class="ti ti-users kpi-icon"></i>
+    </div>
+    <div class="kpi-card c3" onclick="setFilter(null,'Thèse')">
+      <div class="kpi-label">Thèses &amp; Rapports</div>
+      <div class="kpi-val" id="kpi3">0</div>
+      <div class="kpi-sub">Documents primaires</div>
+      <i class="ti ti-certificate kpi-icon"></i>
+    </div>
+    <div class="kpi-card c4" onclick="showPage('statistiques', document.querySelector('.nav-links button:nth-child(4)'))">
+      <div class="kpi-label">Ajouts ce mois</div>
+      <div class="kpi-val" id="kpi4">0</div>
+      <div class="kpi-sub">Juin 2026</div>
+      <i class="ti ti-trending-up kpi-icon"></i>
+    </div>
+  </div>
+
+  <!-- MAIN DASHBOARD -->
+  <div class="dashboard-grid">
+
+    <!-- LEFT: RESULTS -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Documents</span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="result-label" id="resultLabel">6 résultats</span>
+          <button class="panel-action" onclick="clearAllFilters()"><i class="ti ti-refresh"></i> Réinitialiser</button>
+        </div>
+      </div>
+      <div class="filter-row">
+        <button class="filter-btn on" id="ftype-Tous" onclick="setTypeFilter(this,'Tous')">Tous</button>
+        <button class="filter-btn" id="ftype-Thèse" onclick="setTypeFilter(this,'Thèse')">Thèses</button>
+        <button class="filter-btn" id="ftype-Article" onclick="setTypeFilter(this,'Article')">Articles</button>
+        <button class="filter-btn" id="ftype-Rapport" onclick="setTypeFilter(this,'Rapport')">Rapports</button>
+      </div>
+      <div class="filter-selects">
+        <select class="filter-select" id="filterAnnee" onchange="renderDocs()">
+          <option value="">📅 Toutes les années</option>
+        </select>
+        <select class="filter-select" id="filterDiscipline" onchange="renderDocs()">
+          <option value="">🏷️ Toutes les disciplines</option>
+        </select>
+        <select class="filter-select" id="filterSource" onchange="renderDocs()">
+          <option value="">🏛️ Toutes les sources</option>
+        </select>
+        <select class="filter-select" id="filterSort" onchange="renderDocs()" style="margin-left:auto">
+          <option value="recent">Plus récent</option>
+          <option value="ancien">Plus ancien</option>
+          <option value="az">Titre A→Z</option>
+          <option value="za">Titre Z→A</option>
+        </select>
+      </div>
+      <div class="active-filters" id="activeFilters"></div>
+      <div id="resultList"></div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- RIGHT: SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- DONUT -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Répartition par archive</span>
+        </div>
+        <div class="panel-body donut-wrap">
+          <div class="donut-container">
+            <canvas id="donutChart"></canvas>
+            <div class="donut-center">
+              <span class="sm">Total</span>
+              <span class="big">487</span>
+              <span class="sm">docs</span>
+            </div>
+          </div>
+          <div class="legend">
+            <div class="legend-item" onclick="filterBySource('UCAD')"><span class="legend-dot" style="background:#185FA5"></span><span class="legend-name">ISFAD-UCAD</span><span class="legend-count" style="color:#185FA5">235</span></div>
+            <div class="legend-item" onclick="filterBySource('LIENS')"><span class="legend-dot" style="background:#E24B4A"></span><span class="legend-name">LIENS UCAD</span><span class="legend-count" style="color:#E24B4A">144</span></div>
+            <div class="legend-item" onclick="filterBySource('ANSD')"><span class="legend-dot" style="background:#1A5276"></span><span class="legend-name">ANSD</span><span class="legend-count" style="color:#1A5276">58</span></div>
+            <div class="legend-item" onclick="filterBySource('ScholarvOx')"><span class="legend-dot" style="background:#1D9E75"></span><span class="legend-name">ScholarvOx</span><span class="legend-count" style="color:#1D9E75">30</span></div>
+            <div class="legend-item"><span class="legend-dot" style="background:#534AB7"></span><span class="legend-name">Autres</span><span class="legend-count" style="color:#534AB7">20</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BAR CHART -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Croissance mensuelle</span>
+        </div>
+        <div class="panel-body">
+          <div style="position:relative;width:100%;height:130px">
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOURCES LIST -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Parcourir par source</span>
+          <button class="panel-action" onclick="showPage('sources', document.querySelector('.nav-links button:nth-child(3)'))">Voir tout <i class="ti ti-arrow-right"></i></button>
+        </div>
+        <div class="panel-body" style="padding:0 22px">
+          <div style="display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.06);cursor:pointer" onclick="filterBySource('UCAD')">
+              <i class="ti ti-circle-filled" style="color:#185FA5;font-size:10px"></i>
+              <span style="flex:1;font-size:13px">Senegalist ISFAD-UCAD</span>
+              <span style="font-size:13px;font-weight:700;color:#185FA5">235</span>
+              <i class="ti ti-external-link" style="color:#aaa;font-size:14px"></i>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.06);cursor:pointer" onclick="filterBySource('LIENS')">
+              <i class="ti ti-circle-filled" style="color:#E24B4A;font-size:10px"></i>
+              <span style="flex:1;font-size:13px">LIENS — Revue UCAD</span>
+              <span style="font-size:13px;font-weight:700;color:#E24B4A">144</span>
+              <i class="ti ti-external-link" style="color:#aaa;font-size:14px"></i>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.06);cursor:pointer" onclick="filterBySource('ANSD')">
+              <i class="ti ti-circle-filled" style="color:#1A5276;font-size:10px"></i>
+              <span style="flex:1;font-size:13px">ANSD — Démographie</span>
+              <span style="font-size:13px;font-weight:700;color:#1A5276">58</span>
+              <i class="ti ti-external-link" style="color:#aaa;font-size:14px"></i>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 0;cursor:pointer" onclick="filterBySource('ScholarvOx')">
+              <i class="ti ti-circle-filled" style="color:#1D9E75;font-size:10px"></i>
+              <span style="flex:1;font-size:13px">ScholarvOx UCAD</span>
+              <span style="font-size:13px;font-weight:700;color:#1D9E75">30</span>
+              <i class="ti ti-external-link" style="color:#aaa;font-size:14px"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ PAGE: AUTEURS ══════════════ -->
+<div class="page" id="page-auteurs">
+  <div class="section-header">
+    <h2>Auteurs référencés</h2>
+    <p>Chercheurs et institutions ayant contribué au portail Senegalist</p>
+  </div>
+  <div class="auteurs-grid" id="auteursList"></div>
+</div>
+
+<!-- ══════════════ PAGE: SOURCES ══════════════ -->
+<div class="page" id="page-sources">
+  <div class="section-header">
+    <h2>Archives connectées</h2>
+    <p>Dépôts institutionnels et sources académiques indexés sur Senegalist</p>
+  </div>
+  <div class="sources-grid" id="sourcesList"></div>
+</div>
+
+<!-- ══════════════ PAGE: STATISTIQUES ══════════════ -->
+<div class="page" id="page-statistiques">
+  <div class="section-header">
+    <h2>Statistiques du portail</h2>
+    <p>Vue d'ensemble des données documentaires indexées</p>
+  </div>
+  <div class="stats-grid">
+    <div class="chart-panel">
+      <div class="chart-title">Documents par année</div>
+      <canvas id="statsYearChart" height="220"></canvas>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-title">Répartition par type</div>
+      <canvas id="statsTypeChart" height="220"></canvas>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-title">Répartition par discipline</div>
+      <canvas id="statsDisciplineChart" height="220"></canvas>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-title">Évolution mensuelle (2026)</div>
+      <canvas id="statsMonthChart" height="220"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DÉTAIL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open')"><i class="ti ti-x"></i></button>
+    <div class="modal-type" id="modalType"></div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-meta" id="modalMeta"></div>
+    <div class="modal-section-label">Résumé</div>
+    <div class="modal-resume-text" id="modalResume"></div>
+    <div class="modal-section-label">Mots-clés</div>
+    <div class="modal-kws" id="modalKws"></div>
+    <div class="modal-actions">
+      <button class="modal-dl-btn" onclick="showToast('Téléchargement simulé ✓')"><i class="ti ti-download"></i> Télécharger</button>
+      <button class="modal-fav-btn" onclick="showToast('Ajouté aux favoris ★')"><i class="ti ti-star"></i> Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="ti ti-check"></i> <span id="toastMsg"></span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+// ── DATA ──
+const docs = [
+  // ── 2000 ──
+  {
+    titre: 'Transition démocratique au Sénégal : élections de 2000',
+    auteur: 'Badji, S.', source: 'UCAD', type: 'Thèse', annee: 2000,
+    discipline: 'Sciences politiques',
+    bg: '#EEEDFE', color: '#534AB7',
+    resume: 'Cette thèse analyse le processus de transition démocratique au Sénégal lors des élections présidentielles de 2000, marquant l\'alternance politique avec l\'arrivée au pouvoir d\'Abdoulaye Wade et ses implications constitutionnelles.',
+    mots_cles: ['démocratie', 'élections', 'alternance', 'gouvernance', 'Sénégal 2000']
+  },
+  // ── 2002 ──
+  {
+    titre: 'Sécurité alimentaire en zone sahélienne — cas du Sénégal',
+    auteur: 'Mbaye, C.', source: 'ANSD', type: 'Rapport', annee: 2002,
+    discipline: 'Agriculture',
+    bg: '#E6F4F1', color: '#1D9E75',
+    resume: 'Rapport sur l\'état de la sécurité alimentaire dans les régions sahéliennes du Sénégal au début des années 2000. Analyse des facteurs climatiques, des politiques de stockage et des programmes d\'aide alimentaire.',
+    mots_cles: ['sécurité alimentaire', 'Sahel', 'aide humanitaire', 'agriculture', 'céréales']
+  },
+  // ── 2004 ──
+  {
+    titre: 'Informatique et administration publique au Sénégal',
+    auteur: 'Diop, I.', source: 'UCAD', type: 'Thèse', annee: 2004,
+    discipline: 'Informatique',
+    bg: '#E8F5E9', color: '#2E7D32',
+    resume: 'Cette thèse pionnière examine l\'introduction des systèmes informatiques dans l\'administration publique sénégalaise, les défis d\'adoption, la formation des agents et les perspectives de modernisation de l\'État.',
+    mots_cles: ['informatique', 'administration publique', 'e-gouvernement', 'modernisation', 'TIC']
+  },
+  // ── 2006 ──
+  {
+    titre: 'Paludisme et santé publique au Sénégal',
+    auteur: 'Sow, A.', source: 'LIENS', type: 'Article', annee: 2006,
+    discipline: 'Santé publique',
+    bg: '#FBEAF0', color: '#993556',
+    resume: 'Article scientifique sur l\'épidémiologie du paludisme au Sénégal, les stratégies de lutte nationale, l\'efficacité des moustiquaires imprégnées et l\'impact des programmes de prévention dans les zones rurales.',
+    mots_cles: ['paludisme', 'santé publique', 'épidémiologie', 'prévention', 'zones rurales']
+  },
+  // ── 2008 ──
+  {
+    titre: 'Droit foncier et réformes agraires au Sénégal',
+    auteur: 'Fall, M.', source: 'ScholarvOx', type: 'Article', annee: 2008,
+    discipline: 'Droit',
+    bg: '#EEEDFE', color: '#534AB7',
+    resume: 'Analyse juridique du régime foncier sénégalais issu de la loi sur le domaine national de 1964, ses limites face aux enjeux contemporains d\'investissement agricole et les perspectives de réforme.',
+    mots_cles: ['droit foncier', 'domaine national', 'réforme agraire', 'investissement', 'terres']
+  },
+  // ── 2010 ──
+  {
+    titre: 'Croissance économique et réduction de la pauvreté au Sénégal',
+    auteur: 'Ndiaye, A.', source: 'ANSD', type: 'Rapport', annee: 2010,
+    discipline: 'Économie',
+    bg: '#FEF3E2', color: '#BA7517',
+    resume: 'Rapport d\'analyse macroéconomique évaluant les politiques de croissance sénégalaises entre 2000 et 2010, l\'évolution du PIB, la réduction de la pauvreté et l\'impact des programmes de l\'UEMOA.',
+    mots_cles: ['croissance économique', 'pauvreté', 'PIB', 'UEMOA', 'développement']
+  },
+  // ── 2012 ──
+  {
+    titre: 'Réseaux mobiles et inclusion numérique en Afrique subsaharienne',
+    auteur: 'Ba, L.', source: 'UCAD', type: 'Thèse', annee: 2012,
+    discipline: 'Informatique',
+    bg: '#E8F5E9', color: '#2E7D32',
+    resume: 'Thèse sur l\'expansion de la téléphonie mobile en Afrique subsaharienne et son rôle dans l\'inclusion numérique, avec une étude de cas au Sénégal portant sur Orange, Tigo et Expresso.',
+    mots_cles: ['mobile', 'inclusion numérique', 'télécommunications', 'Afrique', 'accès internet']
+  },
+  // ── 2013 ──
+  {
+    titre: 'Gestion des ressources en eau au Sénégal',
+    auteur: 'Diallo, F.', source: 'ANSD', type: 'Rapport', annee: 2013,
+    discipline: 'Sciences de l\'environnement',
+    bg: '#EBF3FF', color: '#185FA5',
+    resume: 'Rapport national sur la gestion des ressources hydrauliques sénégalaises, la pression sur les nappes phréatiques, l\'accès à l\'eau potable en milieu rural et les politiques de l\'ONAS.',
+    mots_cles: ['eau', 'ressources hydrauliques', 'ONAS', 'eau potable', 'assainissement']
+  },
+  // ── 2015 ──
+  {
+    titre: 'Constitution de 2001 et réformes institutionnelles',
+    auteur: 'Fall, I.', source: 'UCAD', type: 'Thèse', annee: 2015,
+    discipline: 'Droit',
+    bg: '#EEEDFE', color: '#534AB7',
+    resume: 'Étude approfondie de la Constitution sénégalaise de 2001, ses apports institutionnels, l\'équilibre des pouvoirs entre exécutif et législatif, et les révisions constitutionnelles intervenues jusqu\'en 2015.',
+    mots_cles: ['constitution', 'institutions', 'pouvoirs', 'réforme', 'État de droit']
+  },
+  // ── 2016 ──
+  {
+    titre: 'Intelligence artificielle et éducation en Afrique',
+    auteur: 'Camara, O.', source: 'ScholarvOx', type: 'Article', annee: 2016,
+    discipline: 'Informatique',
+    bg: '#E8F5E9', color: '#2E7D32',
+    resume: 'Article explorant les premières applications de l\'intelligence artificielle dans les systèmes éducatifs africains, les outils d\'apprentissage adaptatif et les limites liées à la connectivité et aux infrastructures.',
+    mots_cles: ['intelligence artificielle', 'éducation', 'apprentissage adaptatif', 'Afrique', 'EdTech']
+  },
+  // ── 2017 ──
+  {
+    titre: 'Population et développement : projections 2017–2035',
+    auteur: 'Diop, K.', source: 'ANSD', type: 'Rapport', annee: 2017,
+    discipline: 'Démographie',
+    bg: '#E6F4F1', color: '#0F6E56',
+    resume: 'Rapport de projection démographique du Sénégal à l\'horizon 2035, analysant la structure par âge, la fécondité, la mortalité infantile et les implications pour les politiques sociales et économiques.',
+    mots_cles: ['démographie', 'projection', 'fécondité', 'mortalité', 'politiques sociales']
+  },
+  // ── 2018 ──
+  {
+    titre: 'Agriculture intelligente et technologies au Sénégal',
+    auteur: 'Ndiaye, M.', source: 'CORAF', type: 'Rapport', annee: 2018,
+    discipline: 'Agriculture',
+    bg: '#E6F4F1', color: '#1D9E75',
+    resume: 'Rapport du CORAF sur l\'adoption des technologies agricoles intelligentes au Sénégal : drones, capteurs IoT pour l\'irrigation, applications mobiles de conseil aux agriculteurs et leur impact sur les rendements.',
+    mots_cles: ['agriculture intelligente', 'IoT', 'drones', 'technologie', 'rendements agricoles']
+  },
+  // ── 2019 ──
+  {
+    titre: 'Cybersécurité et protection des données au Sénégal',
+    auteur: 'Diouf, A.', source: 'UCAD', type: 'Thèse', annee: 2019,
+    discipline: 'Informatique',
+    bg: '#E8F5E9', color: '#2E7D32',
+    resume: 'Cette thèse étudie le cadre législatif de la cybersécurité au Sénégal, la loi sur les données personnelles, les vulnérabilités des systèmes d\'information publics et les stratégies de protection recommandées.',
+    mots_cles: ['cybersécurité', 'données personnelles', 'RGPD', 'protection', 'numérique']
+  },
+  // ── 2020 ──
+  {
+    titre: 'Impact de la COVID-19 sur l\'économie sénégalaise',
+    auteur: 'Ba, O.', source: 'ANSD', type: 'Rapport', annee: 2020,
+    discipline: 'Économie',
+    bg: '#FEF3E2', color: '#BA7517',
+    resume: 'Rapport d\'évaluation de l\'impact économique de la pandémie COVID-19 sur le Sénégal : chute du tourisme, baisse des exportations, impact sur les PME et efficacité du Programme de Résilience Économique et Social (PRES).',
+    mots_cles: ['COVID-19', 'économie', 'pandémie', 'PRES', 'résilience']
+  },
+  // ── 2021 ──
+  {
+    titre: 'Enseignement à distance et e-learning au Sénégal',
+    auteur: 'Camara, L.', source: 'UCAD', type: 'Article', annee: 2021,
+    discipline: 'Sciences de l\'éducation',
+    bg: '#EBF3FF', color: '#185FA5',
+    resume: 'Article analysant l\'essor de l\'enseignement à distance au Sénégal durant et après la pandémie, les plateformes utilisées, les inégalités d\'accès au numérique et les perspectives pour l\'UCAD et l\'ISFAD.',
+    mots_cles: ['e-learning', 'enseignement à distance', 'ISFAD', 'numérique', 'COVID-19']
+  },
+  // ── 2022 ──
+  {
+    titre: 'Biodiversité marine et pêche durable au Sénégal',
+    auteur: 'Mbaye, R.', source: 'LIENS', type: 'Article', annee: 2022,
+    discipline: 'Sciences de l\'environnement',
+    bg: '#FBEAF0', color: '#993556',
+    resume: 'Étude de la biodiversité des écosystèmes marins côtiers sénégalais, menacés par la surpêche industrielle, le changement climatique et la pollution. Analyse des mesures de conservation et quotas de pêche nécessaires.',
+    mots_cles: ['biodiversité', 'pêche durable', 'océan', 'conservation', 'côtes sénégalaises']
+  },
+  {
+    titre: 'Droit constitutionnel sénégalais contemporain',
+    auteur: 'Fall, I.', source: 'UCAD', type: 'Thèse', annee: 2022,
+    discipline: 'Droit',
+    bg: '#EEEDFE', color: '#534AB7',
+    resume: 'Analyse de l\'évolution du cadre constitutionnel sénégalais depuis l\'indépendance, avec un focus sur les réformes institutionnelles de 2001 et 2016, et leur impact sur l\'équilibre des pouvoirs.',
+    mots_cles: ['droit constitutionnel', 'institutions', 'réforme', 'gouvernance', 'Sénégal']
+  },
+  // ── 2023 ──
+  {
+    titre: 'Politiques agricoles au Sénégal 2000–2020',
+    auteur: 'Ndiaye, M.', source: 'ANSD', type: 'Rapport', annee: 2023,
+    discipline: 'Agriculture',
+    bg: '#E6F4F1', color: '#1D9E75',
+    resume: 'Rapport d\'évaluation des politiques publiques agricoles sénégalaises sur vingt ans, couvrant la sécurité alimentaire, les subventions aux intrants et les programmes d\'irrigation dans les zones rurales.',
+    mots_cles: ['agriculture', 'politique publique', 'sécurité alimentaire', 'irrigation', 'Sénégal']
+  },
+  {
+    titre: 'Financement de l\'enseignement supérieur au Sénégal',
+    auteur: 'Camara, L.', source: 'UCAD', type: 'Thèse', annee: 2023,
+    discipline: 'Sciences de l\'éducation',
+    bg: '#EBF3FF', color: '#185FA5',
+    resume: 'Cette thèse étudie les mécanismes de financement de l\'enseignement supérieur sénégalais, les inégalités d\'accès et les perspectives de réforme pour améliorer la qualité éducative à l\'horizon 2030.',
+    mots_cles: ['éducation', 'financement', 'enseignement supérieur', 'réforme', 'inégalités']
+  },
+  // ── 2024 ──
+  {
+    titre: 'Impact du changement climatique au Sahel sénégalais',
+    auteur: 'Diallo, A.', source: 'UCAD', type: 'Thèse', annee: 2024,
+    discipline: 'Sciences de l\'environnement',
+    bg: '#EBF3FF', color: '#185FA5',
+    resume: 'Cette thèse analyse les effets du changement climatique sur les écosystèmes sahéliens sénégalais, notamment la désertification, la baisse des précipitations et l\'impact sur les populations rurales entre 2000 et 2022.',
+    mots_cles: ['changement climatique', 'Sahel', 'désertification', 'sécheresse', 'agropastoralisme']
+  },
+  {
+    titre: "Systèmes de santé en Afrique de l'Ouest",
+    auteur: 'Sow, F.', source: 'LIENS', type: 'Article', annee: 2024,
+    discipline: 'Santé publique',
+    bg: '#FBEAF0', color: '#993556',
+    resume: "Étude comparative des systèmes de santé dans six pays d'Afrique de l'Ouest, examinant la couverture sanitaire universelle, le financement public et les inégalités d'accès aux soins de base.",
+    mots_cles: ['santé publique', 'couverture universelle', "Afrique de l'Ouest", 'financement', 'inégalités']
+  },
+  {
+    titre: 'Démographie et urbanisation au Sénégal',
+    auteur: 'Diop, K.', source: 'ANSD', type: 'Rapport', annee: 2024,
+    discipline: 'Démographie',
+    bg: '#E6F4F1', color: '#0F6E56',
+    resume: 'Rapport démographique national analysant la croissance de la population urbaine sénégalaise, les migrations internes vers Dakar et les défis d\'aménagement du territoire à l\'horizon 2035.',
+    mots_cles: ['démographie', 'urbanisation', 'Dakar', 'migration', 'aménagement du territoire']
+  },
+  // ── 2025 ──
+  {
+    titre: 'Économie numérique et fintech en Afrique',
+    auteur: 'Ba, O.', source: 'ScholarvOx', type: 'Article', annee: 2025,
+    discipline: 'Économie',
+    bg: '#FEF3E2', color: '#BA7517',
+    resume: 'Cet article examine la transformation numérique des économies africaines, en mettant en avant le rôle du mobile money, des startups fintech et des politiques nationales de digitalisation au Sénégal.',
+    mots_cles: ['numérique', 'fintech', 'mobile money', 'startups', 'transformation digitale']
+  },
+  {
+    titre: 'Gouvernance locale et décentralisation au Sénégal',
+    auteur: 'Diouf, P.', source: 'UCAD', type: 'Rapport', annee: 2025,
+    discipline: 'Sciences politiques',
+    bg: '#EEEDFE', color: '#534AB7',
+    resume: 'Rapport sur l\'état de la décentralisation au Sénégal, les capacités des collectivités territoriales, et les défis de la gouvernance locale dans la mise en œuvre des politiques de développement durable.',
+    mots_cles: ['gouvernance', 'décentralisation', 'collectivités', 'développement local', 'Sénégal']
+  },
+  {
+    titre: 'Intelligence artificielle et souveraineté numérique au Sénégal',
+    auteur: 'Sy, M.', source: 'UCAD', type: 'Thèse', annee: 2025,
+    discipline: 'Informatique',
+    bg: '#E8F5E9', color: '#2E7D32',
+    resume: 'Thèse examinant les enjeux de la souveraineté numérique du Sénégal face à l\'essor de l\'intelligence artificielle, les politiques de régulation, le rôle de l\'Agence de l\'Informatique de l\'État (ADIE) et les stratégies nationales.',
+    mots_cles: ['intelligence artificielle', 'souveraineté numérique', 'ADIE', 'régulation', 'IA Afrique']
+  },
+  // ── 2026 ──
+  {
+    titre: 'Transition énergétique et pétrole au Sénégal',
+    auteur: 'Faye, B.', source: 'ANSD', type: 'Rapport', annee: 2026,
+    discipline: 'Économie',
+    bg: '#FEF3E2', color: '#BA7517',
+    resume: 'Rapport d\'analyse sur les perspectives économiques de la transition énergétique au Sénégal suite aux découvertes pétrolières et gazières offshore, leur impact sur le PIB, l\'emploi et les inégalités de revenus.',
+    mots_cles: ['pétrole', 'gaz', 'transition énergétique', 'ressources naturelles', 'développement']
+  },
+  {
+    titre: 'Santé numérique et télémédecine au Sénégal',
+    auteur: 'Diallo, N.', source: 'LIENS', type: 'Article', annee: 2026,
+    discipline: 'Santé publique',
+    bg: '#FBEAF0', color: '#993556',
+    resume: 'Article sur le déploiement de la télémédecine au Sénégal, les plateformes de consultation à distance, la digitalisation des dossiers médicaux et les enjeux d\'accès aux soins dans les zones rurales reculées.',
+    mots_cles: ['télémédecine', 'santé numérique', 'dossier médical', 'zones rurales', 'accès aux soins']
+  },
+  {
+    titre: 'Big Data et statistiques nationales au Sénégal',
+    auteur: 'Ndoye, T.', source: 'ANSD', type: 'Rapport', annee: 2026,
+    discipline: 'Informatique',
+    bg: '#E8F5E9', color: '#2E7D32',
+    resume: 'Ce rapport de l\'ANSD explore l\'utilisation des technologies Big Data pour améliorer la collecte et l\'analyse des statistiques nationales sénégalaises, le recensement numérique et la prise de décision basée sur les données.',
+    mots_cles: ['big data', 'statistiques', 'recensement', 'données', 'ANSD']
+  },
+];
+
+const pillColors = {
+  'Thèse':   { color: '#185FA5', bg: '#EBF3FF' },
+  'Article': { color: '#993556', bg: '#FBEAF0' },
+  'Rapport': { color: '#1D9E75', bg: '#E6F4F1' },
+};
+
+const avatarColors = ['#185FA5','#1D9E75','#993556','#534AB7','#BA7517','#E24B4A','#0F6E56','#1A5276'];
+
+let currentFilter = 'Tous';
+let currentQuery = '';
+let currentPage = 1;
+const PER_PAGE = 5;
+let favorites = new Set();
+
+// ── NAVIGATION ──
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (name === 'auteurs') renderAuteurs();
+  if (name === 'sources') renderSources();
+  if (name === 'statistiques') renderStats();
+}
+
+// ── FILTERS ──
+function populateFilters() {
+  const annees = [...new Set(docs.map(d => d.annee))].sort((a,b) => b - a);
+  const disciplines = [...new Set(docs.map(d => d.discipline))].sort();
+  const sources = [...new Set(docs.map(d => d.source))].sort();
+  const fill = (id, label, values) => {
+    const el = document.getElementById(id);
+    el.innerHTML = `<option value="">${label}</option>` + values.map(v => `<option value="${v}">${v}</option>`).join('');
+  };
+  fill('filterAnnee', '📅 Toutes les années', annees);
+  fill('filterDiscipline', '🏷️ Toutes les disciplines', disciplines);
+  fill('filterSource', '🏛️ Toutes les sources', sources);
+}
+
+function setTypeFilter(btn, type) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  currentFilter = type;
+  currentPage = 1;
+  renderDocs();
+}
+
+function filterBySource(src) {
+  document.getElementById('filterSource').value = src;
+  currentPage = 1;
+  renderDocs();
+  updateActiveFilters();
+  showToast('Filtré par : ' + src);
+}
+
+function clearAllFilters() {
+  currentQuery = '';
+  currentFilter = 'Tous';
+  currentPage = 1;
+  document.getElementById('searchInput').value = '';
+  document.getElementById('filterAnnee').value = '';
+  document.getElementById('filterDiscipline').value = '';
+  document.getElementById('filterSource').value = '';
+  document.getElementById('depotSelect').value = '';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById('ftype-Tous').classList.add('on');
+  updateActiveFilters();
+  renderDocs();
+}
+
+function updateActiveFilters() {
+  const container = document.getElementById('activeFilters');
+  const tags = [];
+  const annee = document.getElementById('filterAnnee').value;
+  const disc = document.getElementById('filterDiscipline').value;
+  const src = document.getElementById('filterSource').value;
+  if (currentQuery) tags.push({ label: '🔍 ' + currentQuery, clear: () => { currentQuery = ''; document.getElementById('searchInput').value = ''; } });
+  if (annee) tags.push({ label: '📅 ' + annee, clear: () => document.getElementById('filterAnnee').value = '' });
+  if (disc) tags.push({ label: '🏷️ ' + disc, clear: () => document.getElementById('filterDiscipline').value = '' });
+  if (src) tags.push({ label: '🏛️ ' + src, clear: () => document.getElementById('filterSource').value = '' });
+  if (currentFilter !== 'Tous') tags.push({ label: currentFilter, clear: () => { currentFilter = 'Tous'; document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on')); document.getElementById('ftype-Tous').classList.add('on'); } });
+  container.innerHTML = tags.map((t, i) =>
+    `<span class="active-tag">${t.label} <button onclick="removeTag(${i})">×</button></span>`
+  ).join('');
+  window._activeTags = tags;
+}
+
+function removeTag(i) {
+  window._activeTags[i].clear();
+  currentPage = 1;
+  updateActiveFilters();
+  renderDocs();
+}
+
+// ── RENDER DOCS ──
+function getFiltered() {
+  const annee = document.getElementById('filterAnnee')?.value || '';
+  const discipline = document.getElementById('filterDiscipline')?.value || '';
+  const source = document.getElementById('filterSource')?.value || '';
+  const depot = document.getElementById('depotSelect')?.value || '';
+  return docs.filter(d => {
+    const q = currentQuery.toLowerCase();
+    const matchQ = !q || d.titre.toLowerCase().includes(q) || d.auteur.toLowerCase().includes(q)
+      || (d.mots_cles || []).some(k => k.toLowerCase().includes(q))
+      || (d.resume || '').toLowerCase().includes(q)
+      || d.discipline.toLowerCase().includes(q);
+    const matchF = currentFilter === 'Tous' || d.type === currentFilter;
+    const matchA = !annee || d.annee == annee;
+    const matchD = !discipline || d.discipline === discipline;
+    const matchS = !source || d.source === source;
+    const matchDep = !depot || d.source === depot;
+    return matchQ && matchF && matchA && matchD && matchS && matchDep;
+  });
+}
+
+function sortDocs(arr) {
+  const sort = document.getElementById('filterSort')?.value || 'recent';
+  const copy = [...arr];
+  if (sort === 'recent') return copy.sort((a,b) => b.annee - a.annee);
+  if (sort === 'ancien') return copy.sort((a,b) => a.annee - b.annee);
+  if (sort === 'az') return copy.sort((a,b) => a.titre.localeCompare(b.titre));
+  if (sort === 'za') return copy.sort((a,b) => b.titre.localeCompare(a.titre));
+  return copy;
+}
+
+function renderDocs() {
+  updateActiveFilters();
+  const filtered = sortDocs(getFiltered());
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
+  if (currentPage > totalPages) currentPage = 1;
+  const paged = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+
+  document.getElementById('resultLabel').textContent = total + ' résultat' + (total !== 1 ? 's' : '');
+
+  const list = document.getElementById('resultList');
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state"><i class="ti ti-search-off"></i><p>Aucun document trouvé.<br>Essayez un autre terme ou réinitialisez les filtres.</p></div>`;
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  const allDocs = docs; // keep global index for modal
+  list.innerHTML = paged.map((d) => {
+    const gi = docs.indexOf(d);
+    const pc = pillColors[d.type] || { color: '#888', bg: '#eee' };
+    const kws = (d.mots_cles || []).map(k => `<span class="kw-tag" onclick="event.stopPropagation();setQuery('${k}')">${k}</span>`).join('');
+    const isFav = favorites.has(gi);
+    return `<div class="result-item" id="item-${gi}" onclick="openModal(${gi})">
+      <div class="result-icon" style="background:${d.bg}">
+        <i class="ti ti-file-text" style="color:${d.color};font-size:20px"></i>
+      </div>
+      <div class="result-info">
+        <div class="result-title">${d.titre}</div>
+        <div class="result-meta">
+          <span class="result-author"><i class="ti ti-user" style="font-size:11px;margin-right:3px"></i>${d.auteur}</span>
+          <span class="pill" style="color:${pc.color};background:${pc.bg}">${d.type}</span>
+          <span class="pill" style="color:#5F5E5A;background:#F1EFE8">${d.source}</span>
+          <span class="result-year">${d.annee}</span>
+          <span class="pill" style="color:#534AB7;background:#EEEDFE">${d.discipline}</span>
+        </div>
+        <div class="result-resume">${d.resume || ''}</div>
+        <div class="result-keywords">${kws}</div>
+        <button class="result-toggle" onclick="event.stopPropagation();toggleItem(${gi})">▾ Voir le résumé</button>
+      </div>
+      <div class="result-actions" onclick="event.stopPropagation()">
+        <button class="fav-btn ${isFav ? 'active' : ''}" title="Sauvegarder" onclick="toggleFav(${gi})"><i class="ti ti-star"></i></button>
+        <button class="result-dl" title="Télécharger" onclick="showToast('Téléchargement simulé ✓')"><i class="ti ti-download"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+  const pg = document.getElementById('pagination');
+  if (totalPages <= 1) { pg.innerHTML = ''; return; }
+  let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}><i class="ti ti-chevron-left"></i></button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}><i class="ti ti-chevron-right"></i></button>`;
+  pg.innerHTML = html;
+}
+
+function goPage(p) {
+  currentPage = p;
+  renderDocs();
+  document.querySelector('.dashboard-grid').scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleItem(i) {
+  const el = document.getElementById('item-' + i);
+  const btn = el.querySelector('.result-toggle');
+  el.classList.toggle('open');
+  btn.textContent = el.classList.contains('open') ? '▴ Masquer le résumé' : '▾ Voir le résumé';
+}
+
+function toggleFav(i) {
+  if (favorites.has(i)) { favorites.delete(i); showToast('Retiré des favoris'); }
+  else { favorites.add(i); showToast('Ajouté aux favoris ★'); }
+  renderDocs();
+}
+
+// ── MODAL ──
+function openModal(i) {
+  const d = docs[i];
+  const pc = pillColors[d.type] || { color: '#888', bg: '#eee' };
+  document.getElementById('modalType').innerHTML = `<span style="color:${pc.color}">${d.type} · ${d.source} · ${d.annee}</span>`;
+  document.getElementById('modalTitle').textContent = d.titre;
+  document.getElementById('modalMeta').innerHTML = `
+    <span class="pill" style="color:${pc.color};background:${pc.bg}">${d.type}</span>
+    <span class="pill" style="color:#534AB7;background:#EEEDFE">${d.discipline}</span>
+    <span style="font-size:13px;color:var(--muted)"><i class="ti ti-user" style="font-size:11px;margin-right:3px"></i>${d.auteur}</span>
+    <span style="font-size:13px;color:var(--muted)">${d.annee}</span>`;
+  document.getElementById('modalResume').textContent = d.resume || 'Résumé non disponible.';
+  document.getElementById('modalKws').innerHTML = (d.mots_cles || []).map(k =>
+    `<span class="modal-kw" onclick="closeModalAndSearch('${k}')">${k}</span>`).join('');
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay'))
+    document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function closeModalAndSearch(kw) {
+  document.getElementById('modalOverlay').classList.remove('open');
+  setQuery(kw);
+}
+
+// ── SEARCH ──
+function setQuery(q) {
+  document.getElementById('searchInput').value = q;
+  currentQuery = q;
+  currentPage = 1;
+  renderDocs();
+}
+
+function clearQuery() {
+  document.getElementById('searchInput').value = '';
+  currentQuery = '';
+  currentPage = 1;
+  renderDocs();
+}
+
+function doSearch() {
+  currentQuery = document.getElementById('searchInput').value.trim();
+  currentPage = 1;
+  renderDocs();
+}
+
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+
+// ── AUTEURS PAGE ──
+function renderAuteurs() {
+  const auteurs = {};
+  docs.forEach(d => {
+    if (!auteurs[d.auteur]) auteurs[d.auteur] = { count: 0, disciplines: new Set() };
+    auteurs[d.auteur].count++;
+    auteurs[d.auteur].disciplines.add(d.discipline);
+  });
+  const list = document.getElementById('auteursList');
+  list.innerHTML = Object.entries(auteurs).map(([nom, info], idx) => {
+    const initiales = nom.split(',')[0].substring(0,2).toUpperCase();
+    const color = avatarColors[idx % avatarColors.length];
+    return `<div class="auteur-card" onclick="goToAuteur('${nom}')">
+      <div class="auteur-avatar" style="background:${color}">${initiales}</div>
+      <div class="auteur-name">${nom}</div>
+      <div class="auteur-count">${info.count} document${info.count>1?'s':''} · ${[...info.disciplines][0]}</div>
+    </div>`;
+  }).join('');
+}
+
+function goToAuteur(nom) {
+  showPage('recherche', document.querySelector('.nav-links button'));
+  setQuery(nom.split(',')[0]);
+}
+
+// ── SOURCES PAGE ──
+const sourcesData = [
+  { name: 'ISFAD-UCAD', key: 'UCAD', color: '#185FA5', count: 235, total: 487, desc: 'Institut de formation à distance de l\'Université Cheikh Anta Diop. Archive principale des thèses et mémoires académiques.' },
+  { name: 'LIENS UCAD', key: 'LIENS', color: '#E24B4A', count: 144, total: 487, desc: 'Revue électronique de l\'UCAD regroupant des articles scientifiques en lettres, sciences humaines et sociales.' },
+  { name: 'ANSD', key: 'ANSD', color: '#1A5276', count: 58, total: 487, desc: 'Agence Nationale de la Statistique et de la Démographie. Rapports officiels sur la démographie, l\'économie et le développement.' },
+  { name: 'ScholarvOx', key: 'ScholarvOx', color: '#1D9E75', count: 30, total: 487, desc: 'Plateforme d\'accès aux ouvrages scientifiques et articles de recherche en sciences sociales et économiques.' },
+  { name: 'CORAF', key: 'CORAF', color: '#534AB7', count: 20, total: 487, desc: 'Conseil Ouest et Centre Africain pour la Recherche et le Développement Agricoles. Archives de recherche agronomique.' },
+];
+
+function renderSources() {
+  const list = document.getElementById('sourcesList');
+  list.innerHTML = sourcesData.map(s => {
+    const pct = Math.round(s.count / s.total * 100);
+    return `<div class="source-card" onclick="goToSource('${s.key}')">
+      <div class="source-header">
+        <div class="source-dot" style="background:${s.color}"></div>
+        <div class="source-name">${s.name}</div>
+        <span class="source-count-badge" style="color:${s.color};background:${s.color}18">${s.count} docs</span>
+      </div>
+      <div class="source-desc">${s.desc}</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="source-bar-bg" style="flex:1">
+          <div class="source-bar-fill" style="width:${pct}%;background:${s.color}"></div>
+        </div>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">${pct}%</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function goToSource(key) {
+  showPage('recherche', document.querySelector('.nav-links button'));
+  filterBySource(key);
+}
+
+// ── STATS CHARTS ──
+let statsCharts = {};
+function renderStats() {
+  const annees = [...new Set(docs.map(d => d.annee))].sort();
+  const types = [...new Set(docs.map(d => d.type))];
+  const disciplines = [...new Set(docs.map(d => d.discipline))];
+
+  Object.values(statsCharts).forEach(c => c.destroy());
+  statsCharts = {};
+
+  statsCharts.year = new Chart(document.getElementById('statsYearChart'), {
+    type: 'bar',
+    data: {
+      labels: annees,
+      datasets: [{ label: 'Documents', data: annees.map(a => docs.filter(d => d.annee === a).length), backgroundColor: '#0B5FFF', borderRadius: 6 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+  });
+
+  statsCharts.type = new Chart(document.getElementById('statsTypeChart'), {
+    type: 'doughnut',
+    data: {
+      labels: types,
+      datasets: [{ data: types.map(t => docs.filter(d => d.type === t).length), backgroundColor: ['#185FA5','#993556','#1D9E75'], borderWidth: 3, borderColor: '#fff', hoverOffset: 6 }]
+    },
+    options: { responsive: true, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { font: { size: 12 } } } } }
+  });
+
+  statsCharts.disc = new Chart(document.getElementById('statsDisciplineChart'), {
+    type: 'bar',
+    data: {
+      labels: disciplines,
+      datasets: [{ label: 'Documents', data: disciplines.map(d => docs.filter(doc => doc.discipline === d).length), backgroundColor: '#534AB7', borderRadius: 6 }]
+    },
+    options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+  });
+
+  statsCharts.month = new Chart(document.getElementById('statsMonthChart'), {
+    type: 'line',
+    data: {
+      labels: ['Jan','Fév','Mar','Avr','Mai','Jun'],
+      datasets: [{ label: 'Ajouts', data: [18,22,29,25,31,34], borderColor: '#0B5FFF', backgroundColor: 'rgba(11,95,255,0.08)', tension: 0.4, fill: true, pointBackgroundColor: '#0B5FFF', pointRadius: 4 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── DONUT & BAR (sidebar) ──
+new Chart(document.getElementById('donutChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['ISFAD-UCAD','LIENS UCAD','ANSD','ScholarvOx','Autres'],
+    datasets: [{
+      data: [235,144,58,30,20],
+      backgroundColor: ['#185FA5','#E24B4A','#1A5276','#1D9E75','#534AB7'],
+      borderWidth: 3, borderColor: '#ffffff', hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '68%',
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} docs (${Math.round(ctx.raw/487*100)}%)` } } },
+    onClick: (e, el) => { if (el.length) filterBySource(['UCAD','LIENS','ANSD','ScholarvOx','Autres'][el[0].index]); }
+  }
+});
+
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Jan','Fév','Mar','Avr','Mai','Jun'],
+    datasets: [{ label: 'Ajouts', data: [18,22,29,25,31,34], backgroundColor: ['#B5D4F4','#B5D4F4','#B5D4F4','#B5D4F4','#B5D4F4','#0B5FFF'], borderRadius: 5, borderSkipped: false }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` +${ctx.raw} documents` } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#9CA3AF' } },
+      y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { size: 10 }, color: '#9CA3AF', stepSize: 10 }, border: { display: false } }
+    }
+  }
+});
+
+// ── KPI ANIMATION ──
+function animateNum(id, target, prefix, duration) {
+  const el = document.getElementById(id);
+  let start = 0;
+  const inc = target / (duration / 16);
+  const timer = setInterval(() => {
+    start = Math.min(start + inc, target);
+    el.textContent = (prefix || '') + Math.round(start).toLocaleString('fr-FR');
+    if (start >= target) clearInterval(timer);
+  }, 16);
+}
+window.addEventListener('load', () => {
+  animateNum('kpi1', 487, '', 1200);
+  animateNum('kpi2', 312, '', 1000);
+  animateNum('kpi3', 218, '', 900);
+  animateNum('kpi4', 34, '+', 800);
+  populateFilters();
+  renderDocs();
+});
+</script>
+
+<!-- FOOTER -->
+<footer class="footer">
+  © 2026 — <strong>Centre National de Documentation Scientifique et Technique</strong> · Tous droits réservés
+</footer>
+
+</body>
+</html>
